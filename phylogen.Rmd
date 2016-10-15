@@ -1,0 +1,62 @@
+---
+title: "Phylogenenetic analysis"
+author: "Magdalena Gontarz Zhassulanbaikyzy Gulzhan"
+date: "Thursday, October 06, 2016"
+output: pdf_document
+---
+
+# Introduction
+Phylogenetics is the study of evolutionary relationships among groups of organisms,
+which are discovered through molecular sequencing data and morphological data (Wikipedia).
+These relationships are presented on phylogenetic trees, which are used for different purposes 
+for example to classify species or to examine inference of the spatiotemporal evolution of epidemics.
+
+In this report we included issues of computation of evolutionary distances and construction of phylogenetic trees using different methods  - i.e. Unweighted Pair Group Method with Arithmetic Mean (UPGMA) algorithm and Neighbour-Joining (NJ).
+
+# Part 1. Computation of evolutionary distances
+
+## 1)
+
+## 2)
+
+## 3)
+
+## 4)
+
+## 5)
+
+
+## 6)
+
+```{r}
+data = url("http://membres-timc.imag.fr/Michael.Blum/fasta.Rdata")
+load(data)
+
+
+t = seq(0, 100, 0.1)
+p = 0.75 * (1-exp(-4*t/3))
+plot(t,p)
+
+```
+
+## 7)
+
+
+## 8)
+```{r}
+p_prop = seq(0,1,0.01)
+d = -0.75 * log(1-4*p_prop/3)
+plot(p_prop,d)
+```
+
+# Part 2. Construction of phylogenetic trees
+
+## The UPGMA algorithm
+
+## The NJ algorithm
+
+
+# Part 3. Construction of phylogenetic trees with R
+
+
+
