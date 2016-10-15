@@ -15,9 +15,30 @@ In this report we included issues of computation of evolutionary distances and c
 
 # Part 1. Computation of evolutionary distances
 
-## 1)
+The simplest way to calculate the distance between two DNA sequences is to count the proportion of sites that differ between two sequences. It is used in case when number of subs
+
+## 1) Poisson process
+A Poisson process \{$N(t), t \geqslant 0$\} is a counting process with the following
+properties:
+1. N(0) = 0.
+2. The process has stationary and independent increments.
+3. $P(N(t) = n) = e^{-\nu t} \frac{(\nu t)^n}{n!}, n = 0, 1, 2, . . . .$
+
+The last property states that the number of events in any interval
+of length $t$ is Poisson distributed with mean $\nu t$. $\nu$ is called the rate
+of the Poisson process. Having two or more events in a small time interval in such process
+is extremely unlikely, while the probability of a single event is approximately
+proportional to the length of that small interval.
+
+Examples of such process: radioactive decay, phone calls, spread of epidemics, population growth.
 
 ## 2)
+Probability that there is no mutation in an short time interval of length $\Delta t$ (first order approximation) :
+$$P(N(\Delta t)=0) = exp(-\nu \Delta t) = 1- \nu \Delta t $$(Taylor Series)
+
+Probability that there is exactly one substitution in an short time interval of length $\Delta t$ (first order approximation):
+$$P(N(\Delta t)=1) = exp(-\nu \Delta t) \nu \Delta t = \nu \Delta t $$
+
 
 ## 3)
 
@@ -29,10 +50,6 @@ In this report we included issues of computation of evolutionary distances and c
 ## 6)
 
 ```{r}
-data = url("http://membres-timc.imag.fr/Michael.Blum/fasta.Rdata")
-load(data)
-
-
 t = seq(0, 100, 0.1)
 p = 0.75 * (1-exp(-4*t/3))
 plot(t,p)
@@ -53,10 +70,45 @@ plot(p_prop,d)
 
 ## The UPGMA algorithm
 
+1. Algorithmic complexity of an implementation of UPGMA algorithm
+2. UPGMA corresponds to hierarchical clustering with particular linkage function (average)
+3.
+4.
+5. Considered trees are different. Tree displayed on the left panel of Figure 2 has ultrametric distances between species which means that the distance from the root of the tree to all leaves is the same. In this case UPGMA algorithm works well.
+Distances between species in tree displayed on the right panel of Figure 2 are not ultrametric. For such tree UPGMA algorithm is not able to reconstruct the tree.
+
 ## The NJ algorithm
 
 
 # Part 3. Construction of phylogenetic trees with R
 
+
+```{r}
+library(ape)
+library(phangorn)
+
+data = url("http://membres-timc.imag.fr/Michael.Blum/fasta.Rdata")
+load(data)
+
+proportion_dist = dist.dna(data,"raw")
+jukes_cantor_dist = dist.dna(data, "JC69")
+
+treeUPGMA <- upgma(jukes_cantor_dist)
+treeUPGMA_ward = upgma(jukes_cantor_dist, method="ward")
+treeUPGMA_single = upgma(jukes_cantor_dist, method="single")
+treeUPGMA_complete = upgma(jukes_cantor_dist, method="complete")
+treeNJ <- NJ(jukes_cantor_dist)
+
+layout(matrix(c(1,2), 2, 1), height=c(1,2))
+par(mar = c(0,0,2,0)+ 0.1,mfrow= c(3,1))
+plot(treeUPGMA, main="UPGMA")
+plot(treeUPGMA_single, main="single")
+plot(treeUPGMA_complete, main="complete")
+plot(treeNJ, "unrooted", main="NJ")
+
+
+
+
+```
 
 
